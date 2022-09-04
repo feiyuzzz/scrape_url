@@ -1,20 +1,20 @@
-use std::{fs, io};
+use std::{fs, env};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
 
-    let mut url = String::new();
-    let mut output =  String::new();
+    let args: Vec<String> = env::args().collect();
 
-    println!("Pls input the url. example: http://www.rust-lang.org/");
-    io::stdin()
-    .read_line(&mut url)?;
+    if args.len() < 3 {
+        println!("Usage: url output");
+        return Ok(());
+    }
 
-    println!("Pls input the output name. example: rust.md");
-    io::stdin()
-    .read_line(&mut output)?;
+    args.iter().for_each(|arg| {
+        println!("{}", arg);
+    });
 
-    let url = url.trim_end();
-    let output = output.trim_end();
+    let url = &args[1];
+    let output= &args[2];
 
     println!("Fetching url: {}", url);
     let body = reqwest::blocking::get(url)?.text()?;
